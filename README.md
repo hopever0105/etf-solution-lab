@@ -15,13 +15,9 @@
 ## 🎯 한눈에 보기
 
 | 파트 | 내용 | 폴더 |
-
 |:---:|---|---|
-
 | 1️⃣ | **지수 개발**: AI·반도체·전력 10종목, 단일 종목 25% 캡, 분기 정기변경, 일별 지수, 에너지 결합 백테스트 | `01_index_development` |
-
 | 2️⃣ | **ETF 상품 기획**: 주식 지수 80% + 에너지주 바스켓 20% 구성종목표(PDF), 고수익·고위험 ETF 비교 | `02_etf_product` |
-
 | 3️⃣ | **경쟁 ETF 분석**: 상장 ETF 98개의 구성종목 겹침과 수익률 상관 (기준일 2026-10-16) | `03_etf_universe_analysis` |
 
 ### 🧭 결론
@@ -39,31 +35,18 @@
 ## 📁 폴더 구조
 
 ```text
-
 etf-solution-lab/
-
 ├── 📄 README.md
-
 ├── .gitignore · .env.example · environment.yml · requirements.txt
-
 ├── 01_index_development/
-
 │   ├── src/        00_collect_futures_tv.py, day1 ~ day4 (지수 개발)
-
 │   └── reports/    Day 1~4, 지수 산출 방법서 초안, 요약, 통합본 (PDF)
-
 ├── 02_etf_product/
-
 │   ├── src/        day5_etf_pdf.py, etf_risk_return.py
-
 │   └── docs/       ETF 상품 제안서, DB_SCHEMA.md
-
 └── 03_etf_universe_analysis/
-
     ├── src/        etf_update.py, etf_overlap.py, etf_corr.py
-
     └── docs/       ETF_중복구조_분석_GitHub용.pdf
-
 ```
 
 ---
@@ -71,33 +54,20 @@ etf-solution-lab/
 ## 1️⃣ 지수 개발
 
 | 항목 | 내용 |
-
 |---|---|
-
 | 대상 | 국내 상장 보통주, 후보군 191종목에서 결정일마다 유니버스 구성 |
-
 | 선정 | 산업군 쿼터(CHIP 4 · POWER 3 · HW 2 · PLAT 1)로 10종목, 버퍼 규칙 1.5배 |
-
 | 비중 | 시가총액 비중, 단일 종목 25% 캡 후 초과분 비례 재분배 |
-
 | 변경 | 분기 정기변경(결정일 D, 반영일 D+3거래일), 비중 30% 초과 3일 연속 시 수시변경 |
-
 | 산출 | 기준시가총액 방식 가격지수(PR), 2022-04-04 = 1000 |
-
 | 성과지표 | CAGR, 연변동성, MDD, K-Sharpe (KRX 방법론, CD91 기반) |
-
 | 지수 (2022-04-04 ~ 2026-10-16) | CAGR | 연변동성 | MDD | K-Sharpe |
-
 |---|---:|---:|---:|---:|
-
 | A (주식 지수) | 32.3% | 39.4% | -47.3% | 0.651 |
-
 | **B 20% (제안)** | 28.7% | 33.5% | -37.5% | 0.678 |
-
 | KOSPI | 17.2% | 30.7% | -39.1% | 0.427 |
 
 > 삼성전자와 SK하이닉스가 후보 시가총액의 약 81%를 차지해 25% 캡이 19회 정기변경 모두에서 발동했습니다.
-
 > 보고서는 `01_index_development/reports/통합본_전체보고서.pdf`부터 보시면 됩니다.
 
 ---
@@ -120,19 +90,13 @@ etf-solution-lab/
 ## 3️⃣ 경쟁 ETF 분석
 
 > 운용사와 상품명이 달라도 구성종목과 비중이 같다면 투자자에게는 사실상 같은 상품입니다.
-
 > 그 중복을 **구성종목 겹침**과 **실제 수익률 상관** 두 가지로 측정합니다. 기준일 **2026-10-16** · 국내 상장 ETF **98개** · **37개** 섹터
 
 | 지표 | 결과 |
-
 |---|---|
-
 | 🔁 가중 겹침 50% 이상인 쌍 | **11쌍** (겹침이 있는 419쌍 중) |
-
 | 📈 구성 겹침 ↔ 수익률 상관 (스피어먼) | **0.715** (48개 ETF, 318쌍) |
-
 | 🧩 같은 섹터 쌍의 평균 수익률 상관 | **0.718** (대분류가 다르면 0.321) |
-
 | 💧 일평균 거래대금 10억원 미만 | 비액티브 국내 ETF **49개 중 14개** |
 
 ### 🔍 핵심 발견
@@ -152,29 +116,19 @@ etf-solution-lab/
 ### 🧪 분석 방법
 
 | 분석 | 방법 | 대상 |
-
 |---|---|---|
-
 | **가중 겹침** | 종목별 비중 중 작은 값의 합 `Σ min(w_a, w_b)` (0~100%) | 국내 종목 ETF 54개 |
-
 | **종목 겹침 (Jaccard)** | 공개 구성종목 집합의 교집합 ÷ 합집합. 구분선은 결과 확인 전에 고정 (0.50 / 0.20) | 공개 종목 5개 이상 36개, 630쌍 |
-
 | **수익률 상관** | 2025-10-17 ~ 2026-10-16 종가 기준 일간 수익률의 피어슨 상관 | 관측일 200일 이상 84개 |
-
 | **겹침 vs 상관** | 스피어먼 순위상관 | 48개, 318쌍 |
-
 | **상품 품질** | 괴리율, 추적오차, 거래대금 (최근 60일) | 비액티브 국내 ETF 49개 |
 
 💡 pykrx의 `비중` 열이 해외종목에서 0으로 오기 때문에 **`금액` 열로 ETF별 비중을 직접 계산**했습니다. 해외종목이 섞여 비중이 왜곡되는 혼합형 7개는 가중 겹침 비교에서 제외했습니다.
 
 | 스크립트 | 하는 일 | 주요 출력 (`etf_out/`) |
-
 |---|---|---|
-
 | `etf_update.py` | KRX 공시 구성종목(PDF) 수집, 괴리율·추적오차·거래대금, 가중 겹침 계산 | `etf_holdings_*.csv`, `etf_stats_*.csv`, `etf_weighted_overlap_*.csv` |
-
 | `etf_overlap.py` | 공개 상위 종목 집합의 Jaccard, 종목 편입 빈도와 집중도(HHI) | `etf_pair_overlap.csv`, `stock_frequency.csv`, 히트맵 PNG |
-
 | `etf_corr.py` | 일간 수익률 상관행렬, 같은 섹터/대분류별 평균, 겹침과 상관의 스피어먼 | `etf_return_corr.csv`, `etf_pair_overlap_vs_corr.csv`, 히트맵 PNG |
 
 ---
@@ -184,11 +138,8 @@ etf-solution-lab/
 **환경**
 
 ```bash
-
 conda env create -f environment.yml
-
 conda activate ta_env
-
 ```
 
 주요 패키지: pandas(2.x), numpy, matplotlib, sqlalchemy, pymysql, requests, tqdm, openpyxl, pykrx, finance-datareader, tradingview-screener, tvdatafeed-enhanced
@@ -210,13 +161,9 @@ conda activate ta_env
 **환경변수** (코드에 직접 쓰지 않습니다)
 
 | 이름 | 용도 |
-
 |---|---|
-
 | `DB_PW` | MySQL 비밀번호 (`DB_USER`는 기본 root) |
-
 | `ECOS_KEY` | 한국은행 ECOS API 키 |
-
 | `KRX_ID`, `KRX_PW` | KRX 로그인이 필요할 때만 |
 
 윈도우에서는 `setx DB_PW "비밀번호"` 실행 후 Spyder를 다시 켭니다. `.env.example`을 참고하세요.
@@ -226,33 +173,21 @@ conda activate ta_env
 ## 🗄️ DB 테이블 (stock_db)
 
 | 테이블 | 설명 | 만드는 곳 |
-
 |---|---|---|
-
 | `kor_ticker`, `kor_price`, `kor_value`, `fdr_kr_ticker` | 종목, 시세, 가치 지표, 분류 | 사전 준비 |
-
 | `tv_futures_price` | 선물·환율·지수 일봉 | `00_collect_futures_tv.py` |
-
 | `idx_candidate` | 후보군 | `day1` |
-
 | `idx_weight_hist` | 변형별 정기변경 비중 이력 | `day2`, `day3` |
-
 | `idx_level` | 변형별 일별 지수 | `day3` |
-
 | `cd91_rate` | CD 91일 금리 | `day4` |
-
 | `idx_mix_level` | 에너지 결합 시나리오 지수 | `day4` |
-
 | `idx_etf_pdf` | ETF 구성종목 비중 이력 | `day5_etf_pdf.py` |
 
 ## 📦 보유 자료 (저장소에는 미포함)
 
 | 자료 | 규모 |
-
 |---|---|
-
 | 직접 정리한 ETF 유니버스 (엑셀) | ETF 98개 · 구성종목 624행 · 섹터별 통합종목 447행 · 종목 마스터 342종목 |
-
 | 지수 방법론 PDF (FnGuide, KEDI, WISE, KOSDAQ150, K-샤프지수) | 저작물이라 미포함 |
 
 ---
@@ -268,17 +203,11 @@ conda activate ta_env
 ## 🗺️ 진행 상태
 
 | 단계 | 내용 | 상태 |
-
 |:---:|---|:---:|
-
 | 1 | 지수 개발과 에너지 결합 백테스트 | ✅ |
-
 | 2 | ETF 구성종목표(PDF) 생성 코드 | ✅ |
-
 | 3 | 경쟁 ETF 중복도·상관 분석 | ✅ |
-
 | 4 | 고수익·고위험 ETF 비교 | ⏳ |
-
 | 5 | 가상 ETF 기획서 (선정 규칙, 리밸런싱 규칙, 검증 결과) | ⏳ 초안 있음 |
 
 ---
